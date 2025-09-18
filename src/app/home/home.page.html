@@ -1,20 +1,43 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+    <ion-title>{{ username }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">Salir</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <div class="cards-container">
+    <div class="credential-card" *ngFor="let pwd of passwords">
+      <div class="card-header">{{ pwd.account_name }}</div>
+      <div class="card-body">
+        <p><strong>Usuario:</strong> {{ pwd.username }}</p>
+        <p>
+          <strong>Contraseña:</strong>
+          <br>
+          <span>{{ showPassword[pwd.id!] ? pwd.password_encrypted : '••••••••' }}</span>
+        </p>
+        <p *ngIf="pwd.notes" class="notes"><strong>Notas:</strong> {{ pwd.notes }}</p>
+        <p class="notes"><strong>URL:</strong>{{ pwd.url }}</p>
+      </div>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+      <!-- Botón en el footer de la card -->
+      <div class="card-footer">
+  <ion-button expand="block" (click)="togglePassword(pwd.id!)">
+    {{ showPassword[pwd.id!] ? 'Ocultar' : 'Mostrar' }}
+  </ion-button>
+
+  <div class="action-buttons">
+    <ion-button class="btn-delete" (click)="deletePassword(pwd.id!)">Eliminar</ion-button>
   </div>
+</div>
+    </div>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button (click)="agregarClave()">
+    <ion-icon name="add"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
 </ion-content>
